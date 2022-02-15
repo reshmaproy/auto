@@ -1,0 +1,13 @@
+on:
+  pull_request:
+    branches:
+      -main
+    types: [closed]
+
+jobs:
+  checkVersion:
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Read VERSION file
+        id: getversion
+        run: echo "::set-output name=version::$(cat product.version)"
