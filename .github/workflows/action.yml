@@ -19,7 +19,7 @@ jobs:
   CreateRelease:
     needs: checkVersion
     runs-on: ubuntu-latest
-    if: ${{getversion.outputs.mainVersion}} == ${{getversion.outputs.branchVersion}} 
+    if: ${{checkVersion.steps.getversion.outputs.mainVersion}} == ${{checkVersion.steps.getversion.outputs.branchVersion}} 
     #&& (github.event.pull_request.merged == true)
     steps:
       - name: Create Draft Release
