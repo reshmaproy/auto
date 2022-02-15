@@ -48,7 +48,7 @@ jobs:
           path: info
           
       - name: Publish Release    
-      - uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v1
         with:
           name: info
       - name: Set publish_info
@@ -56,7 +56,7 @@ jobs:
         run: |
           release_id=$(cat info/release_id)
           echo "::set-output name=release_id::$release_id"
-      - uses: eregon/publish-release@v1
+        uses: eregon/publish-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
