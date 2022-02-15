@@ -6,20 +6,24 @@ on:
 jobs:
   checkVersion:
     runs-on: ubuntu-latest
+    outputs:
+     mainVersion: ${{steps.getversionMain.outputs.mainVersion}}
+     branchVersion: ${{{steps.getversionMain.outputs.branchVersion}}
     #if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Read VERSION file
-        id: getversion
+      - id: getversionMain	
         run: |
-          echo "::set-output name=mainVersion::$(cat product.version)"
-          echo "::set-output name=branchVersion::$(git show $test:product.version)"
+          echo "::set-output name=mainversion::$(cat product.version)"
+      - id: getversionBranch
+        run: |
+          echo "::set-output name=branchversion::$(git show $test:product.version)"
  
   CreateRelease:
     needs: checkVersion
     runs-on: ubuntu-latest
-    if: ${{checkVersion.steps.getversion.outputs.mainVersion}} == ${{checkVersion.steps.getversion.outputs.branchVersion}} 
+    if: ${{needs.checkVersion.outputs.mainVersion}} == ${{needs.checkVersion.outputs.branchVersion}} 
     #&& (github.event.pull_request.merged == true)
     steps:
       - name: Create Draft Release
