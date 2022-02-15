@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
      mainVersion: ${{steps.getversionMain.outputs.mainVersion}}
-     branchVersion: ${{{steps.getversionMain.outputs.branchVersion}}
+     branchVersion: ${{steps.getversionMain.outputs.branchVersion}}
     #if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
