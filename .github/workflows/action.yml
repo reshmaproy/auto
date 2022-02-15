@@ -18,15 +18,15 @@ jobs:
     needs: checkVersion
     if: ($(cat product.version) == $(git show $test:product.version)) && (github.event.pull_request.merged == true)
     steps:
-      -name: Create Draft Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        release: $(git show $test:releaseName)
-      with:
-        tag_name: $(cat product.version)
-        release_name: $release 
-        draft: true
-        prerelease: false
+      - name: Create Draft Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          release: $(git show $test:releaseName)
+        with:
+          tag_name: $(cat product.version)
+          release_name: $release 
+          draft: true
+          prerelease: false
       
