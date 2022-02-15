@@ -12,6 +12,6 @@ jobs:
       - name: Read VERSION file
         id: getversion
         run: |
-          echo "$(cat product.version)" >> $mainVersion
-          echo "$(git show $test:product.version)" >> $branchVersion
-          echo $mainVersion $branchVersion
+          echo "$(cat product.version)" 
+          echo "$(git show $test:product.version)" 
+      
