@@ -37,4 +37,27 @@ jobs:
           release_name: ${{needs.checkVersion.outputs.mainVersion}} 
           draft: true
           prerelease: false
-      
+      - name: Create artifact files
+        run: |
+          mkdir info
+          echo "${{ steps.create_release.outputs.id }}" > info/release_id
+          echo "${{ steps.create_release.outputs.upload_url }}" > info/upload_url
+      - uses: actions/upload-artifact@v1
+        with:
+          name: info
+          path: info
+          
+      - name: Publish Release    
+      - uses: actions/download-artifact@v1
+        with:
+          name: info
+      - name: Set publish_info
+        id: publish_info
+        run: |
+          release_id=$(cat info/release_id)
+          echo "::set-output name=release_id::$release_id"
+      - uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.publish_info.outputs.release_id }}  
