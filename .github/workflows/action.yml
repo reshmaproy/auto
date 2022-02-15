@@ -42,7 +42,7 @@ jobs:
           mkdir info
           echo "${{ steps.create_release.outputs.id }}" > info/release_id
           echo "${{ steps.create_release.outputs.upload_url }}" > info/upload_url
-      - uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v1
         with:
           name: info
           path: info
