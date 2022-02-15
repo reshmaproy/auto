@@ -1,7 +1,7 @@
 on:
-  push:
-  #pull_request:
-    #types: [closed]
+  #push:
+  pull_request:
+    types: [closed]
 
 jobs:
   checkVersion:
@@ -9,7 +9,7 @@ jobs:
     outputs:
      mainVersion: ${{steps.getversionMain.outputs.mainVersion}}
      branchVersion: ${{steps.getversionMain.outputs.branchVersion}}
-    #if: github.event.pull_request.merged == true
+     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,8 +23,7 @@ jobs:
   CreateRelease:
     needs: checkVersion
     runs-on: ubuntu-latest
-    if: ${{needs.checkVersion.outputs.mainVersion}} == ${{needs.checkVersion.outputs.branchVersion}} 
-    #&& (github.event.pull_request.merged == true)
+    if: ${{needs.checkVersion.outputs.mainVersion}} == ${{needs.checkVersion.outputs.branchVersion}} && (github.event.pull_request.merged == true)
     steps:
       - name: Create Draft Release
         id: create_release
