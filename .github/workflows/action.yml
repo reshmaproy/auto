@@ -13,12 +13,13 @@ jobs:
       - name: Read VERSION file
         id: getversion
         run: |
-          echo "$(cat product.version)" 
-          echo "$(git show $test:product.version)" 
+          echo "::set-output name=mainVersion::$(cat product.version)"
+          echo "::set-output name=branchVersion::$(git show $test:product.version)"
+ 
   CreateRelease:
     needs: checkVersion
     runs-on: ubuntu-latest
-    if: $(cat product.version) == $(git show $test:product.version) 
+    if: ${{getversion.outputs.mainVersion}} == ${{getversion.outputs.branchVersion}} 
     #&& (github.event.pull_request.merged == true)
     steps:
       - name: Create Draft Release
