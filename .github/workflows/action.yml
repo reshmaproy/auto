@@ -11,7 +11,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Read VERSION file
         id: getversion
-        run: |
-          mainVersion = $(cat product.version)
-          branchVersion = $(git show $test:product.version)
-          echo $mainVersion $branchVersion
+        run:
+	  name: version check
+	  command: |
+            echo "$(cat product.version)" >> $mainVersion
+            echo "$(git show $test:product.version)" >> $branchVersion
+            echo $mainVersion $branchVersion
