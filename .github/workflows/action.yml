@@ -17,6 +17,7 @@ jobs:
           echo "$(git show $test:product.version)" 
   CreateRelease:
     needs: checkVersion
+    runs-on: ubuntu-latest
     if: $(cat product.version) == $(git show $test:product.version) 
     #&& (github.event.pull_request.merged == true)
     steps:
