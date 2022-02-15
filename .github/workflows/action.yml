@@ -1,11 +1,12 @@
 on:
-  pull_request:
-    types: [closed]
+  push:
+  #pull_request:
+    #types: [closed]
 
 jobs:
   checkVersion:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,7 +17,8 @@ jobs:
           echo "$(git show $test:product.version)" 
   CreateRelease:
     needs: checkVersion
-    if: ($(cat product.version) == $(git show $test:product.version)) && (github.event.pull_request.merged == true)
+    if: $(cat product.version) == $(git show $test:product.version) 
+    #&& (github.event.pull_request.merged == true)
     steps:
       - name: Create Draft Release
         id: create_release
