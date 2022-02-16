@@ -1,39 +1,30 @@
 on:
   #push:
-  pull_request:
+  pull_request_target:
     types: [closed]
+    branches:
+      -main
+    paths:
+      -"**.version"
 
 jobs:
-  checkVersion:
+  
+  CreateRelease:
     runs-on: ubuntu-latest
-    outputs:
-      mainVersion: ${{steps.getversionMain.outputs.mainVersion}}
-      branchVersion: ${{steps.getversionMain.outputs.branchVersion}}
     if: github.event.pull_request.merged == true
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - id: getversionMain	
-        run: |
-          echo "::set-output name=mainversion::$(git show ${{github.base_ref}}:product.version)"
-      - id: getversionBranch
-        run: |
-          echo "::set-output name=branchversion::$(git show ${{github.head_ref}}:product.version)"
- 
-  CreateRelease:
-    needs: checkVersion
-    runs-on: ubuntu-latest
-    if: ${{needs.checkVersion.outputs.mainVersion}} == ${{needs.checkVersion.outputs.branchVersion}} && (github.event.pull_request.merged == true)
-    steps:
+      - name: Read VERSION file
+        id: getversion
+        run: echo "::set-output name=version::$(cat **.version)"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          release: $(git show $test:releaseName)
+          release: ${{steps.getversion.outputs.version}}
         with:
-          tag_name: ${{needs.checkVersion.outputs.mainVersion}}
-          release_name: ${{needs.checkVersion.outputs.mainVersion}} 
+          tag_name: ${{steps.getversion.outputs.version}}
+          release_name: Release ${{steps.getversion.outputs.version}}  
           draft: true
           prerelease: false
       - name: Create artifact files
