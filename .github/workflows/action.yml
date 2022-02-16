@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Read VERSION file
         id: getversion
-        run: echo "::set-output name=version::$(cat product.version)"
+        run: echo "::set-output name=version::$(git show $main:product.version)"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
