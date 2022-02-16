@@ -1,11 +1,12 @@
 on:
   #push:
   pull_request_target:
-    types: [closed]
+    types: 
+      - closed
     branches:
-      -main
+      - main
     paths:
-      -"**.version"
+      - "**.version"
 
 jobs:
   
