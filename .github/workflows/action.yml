@@ -16,15 +16,17 @@ jobs:
     steps:
       - name: Read VERSION file
         id: getversion
-        run: echo "::set-output name=version::$(git show ${{github.base_ref}}:product.version)"
+        run: |
+           VER=$(cat product.version)
+           echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{steps.getversion.outputs.version}}
-          release_name: Release ${{steps.getversion.outputs.version}}  
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}  
           draft: true
           prerelease: false
       - name: Create artifact files
