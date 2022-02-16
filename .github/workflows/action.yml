@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v2
       - id: getversionMain	
         run: |
-          echo "::set-output name=mainversion::$(cat product.version)"
+          echo "::set-output name=mainversion::$(git show ${{github.base_ref}}:product.version)"
       - id: getversionBranch
         run: |
-          echo "::set-output name=branchversion::$(git show $test:product.version)"
+          echo "::set-output name=branchversion::$(git show ${{github.head_ref}}:product.version)"
  
   CreateRelease:
     needs: checkVersion
