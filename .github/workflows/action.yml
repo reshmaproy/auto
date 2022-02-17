@@ -14,19 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Get Version
         id: get_version
         run: |
-          pwd
-          ls
+          echo "::set-output name=version::$(cat **.version)"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release    
+          tag_name: ${{steps.get_vesion.outputs.version}}
+          release_name: Release ${{steps.get_vesion.outputs.version}}
           draft: true
           prerelease: false
       - name: Create artifact files
