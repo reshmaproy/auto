@@ -20,8 +20,6 @@ jobs:
         id: get_version
         run: |
           echo "::set-output name=version::$(cat product.version)"
-          ls
-          echo "cat product.version"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
@@ -29,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{steps.get_version.outputs.version}}
-          release_name: Release ${{steps.get_vesion.outputs.version}}
+          release_name: Release ${{steps.get_version.outputs.version}}
           draft: true
           prerelease: false
       - name: Create artifact files
