@@ -9,10 +9,33 @@ on:
       - "**.version"
 
 jobs:
+
+  CheckVersion:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true   
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check Semantic version and proper increment 
+        id: checkVersion
+        run: |
+          echo "::set-output name=versionBase::$(git diff HEAD main **.version | grep "v" | grep "\-v")"
+          echo "::set-output name=versionHead::$(git diff HEAD main **.version | grep "v" | grep "\+v")"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  
+      - name: check Semantic
+        id: semanticCheck
+        run: |
+          pip install semantic_version
+          OUT=`python ./.github/workflows/version.py ${{steps.checkVersion.outputs.versionHead}} ${{steps.checkVersion.outputs.versionBase}}`
+          echo $OUT          
+          echo "::set-output name=valid::$OUT"
   
   CreateRelease:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    needs: CheckVersion
+    if: github.event.pull_request.merged == true && ${{needs.CheckVersion.semanticCheck.outputs.valid}} == True
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
