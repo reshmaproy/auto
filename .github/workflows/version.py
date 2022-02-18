@@ -8,7 +8,6 @@ s2 = sys.argv[2]
 
 try:
     v1 = semantic_version.Version(s1)
-    break
 except ValueError:
     print("Incorrect syntex. Please follow Semantic Versioning")
 
