@@ -7,8 +7,8 @@ n = len(sys.argv)
 print("n=  ", n)
 for i in range(n):
     print(sys.argv[i])
-s1 = sys.argv[1]
-s2 = sys.argv[2]
+s1 = sys.argv[1][2:]
+s2 = sys.argv[2][2:]
 
 try:
     v1 = semantic_version.Version(s1)
