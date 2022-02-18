@@ -19,9 +19,9 @@ jobs:
       - name: Check Semantic version and proper increment 
         id: checkVersion
         run: |
-          echo $(git diff HEAD main **.version)
-          echo $(git diff HEAD main **.version | grep "v" )
-          echo $(git diff HEAD main **.version | grep "v" | grep "\-v")
+          git diff HEAD main **.version
+          git diff HEAD main **.version | grep "v" 
+          git diff HEAD main **.version | grep "v" | grep "\-v"
           echo "::set-output name=versionBase::$(git diff HEAD main **.version | grep "v" | grep "\-v")"
           echo "::set-output name=versionHead::$(git diff HEAD main **.version | grep "v" | grep "\+v")"
       - uses: actions/setup-python@v2
