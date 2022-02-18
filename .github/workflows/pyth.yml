@@ -1,0 +1,20 @@
+on:
+  push:
+
+jobs:
+
+  CheckVersion:
+    runs-on:ubuntu-latest
+    #if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+        python-version: '3.x'  
+      - name: check Semantic
+        run: |
+          pip install semantic_version
+          OUT=`python version.py $1.0.3 $1.0.2`
+          echo $OUT          
+          echo "::set-output name=valid::$OUT"
