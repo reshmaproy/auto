@@ -37,7 +37,7 @@ jobs:
   CreateRelease:
     runs-on: ubuntu-latest
     needs: CheckVersion
-    if: github.event.pull_request.merged == true && ${{needs.CheckVersion.semanticCheck.outputs.valid}} == 'True'
+    if: ${{needs.CheckVersion.semanticCheck.outputs.valid}} == 'True'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
