@@ -10,11 +10,7 @@ for i in range(n):
 s1 = sys.argv[1][2:]
 s2 = sys.argv[2][2:]
 
-try:
-    v1 = semantic_version.Version(s1)
-except ValueError:
-    print("Incorrect syntex. Please follow Semantic Versioning")
-
+v1 = semantic_version.Version(s1)
 v2 = semantic_version.Version(s2)
 
 valid = semantic_version.Version(s1) > semantic_version.Version(s2)
