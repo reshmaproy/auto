@@ -21,7 +21,6 @@ jobs:
       - name: Check Semantic version and proper increment 
         id: checkVersion
         run: |
-          echo $(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} **.version)
           echo "::set-output name=versionBase::$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} **.version | grep "\-v") "
           echo "::set-output name=versionHead::$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} **.version | grep "\+v") "
       - uses: actions/setup-python@v2
@@ -33,16 +32,14 @@ jobs:
           pip install semantic_version
           Head = ${{steps.checkVersion.outputs.versionHead}}
           Base = ${{steps.checkVersion.outputs.versionBase}}
-          echo $Head
-          echo $Base
-          OUT=`python ./.github/workflows/version.py $Head $Base`
+          OUT=`python ./.github/workflows/version.py ${{steps.checkVersion.outputs.versionHead}} ${{steps.checkVersion.outputs.versionBase}}`
           echo $OUT          
           echo "::set-output name=valid::$OUT"
   
   CreateRelease:
     runs-on: ubuntu-latest
     needs: CheckVersion
-    if: github.event.pull_request.merged == true && ${{needs.CheckVersion.semanticCheck.outputs.valid}} == True
+    if: github.event.pull_request.merged == true && ${{needs.CheckVersion.semanticCheck.outputs.valid}} == 'True'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
