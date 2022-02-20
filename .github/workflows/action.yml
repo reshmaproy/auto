@@ -30,8 +30,6 @@ jobs:
         id: semanticCheck
         run: |
           pip install semantic_version
-          Head = ${{steps.checkVersion.outputs.versionHead}}
-          Base = ${{steps.checkVersion.outputs.versionBase}}
           OUT=`python ./.github/workflows/version.py ${{steps.checkVersion.outputs.versionHead}} ${{steps.checkVersion.outputs.versionBase}}`
           echo $OUT          
           echo "::set-output name=valid::$OUT"
