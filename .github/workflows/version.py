@@ -3,10 +3,7 @@ import semantic_version
 
 #v1 -> version of head branch
 #v2 -> version of base branch
-n = len(sys.argv)
-print("n=  ", n)
-for i in range(n):
-    print(sys.argv[i])
+ 
 s1 = sys.argv[1][2:]
 s2 = sys.argv[2][2:]
 
