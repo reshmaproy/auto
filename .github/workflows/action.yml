@@ -12,6 +12,8 @@ jobs:
 
   CheckVersion:
     runs-on: ubuntu-latest
+    outputs:
+      ValidVersion: ${{ steps.semanticCheck.outputs.valid }}
     if: github.event.pull_request.merged == true   
     steps:
       - name: Checkout code
@@ -37,11 +39,11 @@ jobs:
   CreateRelease:
     runs-on: ubuntu-latest
     needs: CheckVersion    
-    #if: needs.CheckVersion.outputs.valid == 'True' && github.event.pull_request.merged == true
+    #if: needs.CheckVersion.outputs.ValidVersion == 'True' && github.event.pull_request.merged == true
     steps:
       - name: CheckOutput
         run: |
-          echo ${{needs.CheckVersion.outputs.valid}}
+          echo ${{needs.CheckVersion.outputs.ValidVersion}}
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get Version
