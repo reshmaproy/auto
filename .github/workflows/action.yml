@@ -33,7 +33,7 @@ jobs:
         run: |
           pip install semantic_version
           OUT=`python ./.github/workflows/version.py ${{steps.checkVersion.outputs.versionHead}} ${{steps.checkVersion.outputs.versionBase}}`
-          echo '$OUT '         
+          echo $OUT       
           echo "::set-output name=valid::$OUT"
   
   CreateRelease:
