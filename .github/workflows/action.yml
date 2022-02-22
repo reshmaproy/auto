@@ -36,9 +36,12 @@ jobs:
   
   CreateRelease:
     runs-on: ubuntu-latest
-    needs: CheckVersion
-    if: needs.CheckVersion.outputs.valid == 'True' && github.event.pull_request.merged == true
+    needs: CheckVersion    
+    #if: needs.CheckVersion.outputs.valid == 'True' && github.event.pull_request.merged == true
     steps:
+      - name: CheckOutput
+        run: |
+          echo ${{needs.CheckVersion.outputs.valid}}
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get Version
