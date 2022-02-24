@@ -60,7 +60,7 @@ jobs:
       - name: Create Release Notes
         id : releaseNotes
         run: |
-          echo "::set-output name=ReleaseNotes::$(git log --merges --format=%b master ${{needs.CheckVersion.outputs.OldVersion}}) "
+          echo "::set-output name=ReleaseNotes::$(git log --merges master ${{needs.CheckVersion.outputs.OldVersion}}) --oneline"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
