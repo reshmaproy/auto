@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ValidVersion: ${{ steps.semanticCheck.outputs.valid }}
-      OldVersion: ${{ steps.checkVersion.outputs.Old}}
-      NewVersion: ${{ steps.checkVersion.outputs.New}}
+      OldVersion: ${{ steps.getTags.outputs.Old}}
+      NewVersion: ${{ steps.getTags.outputs.New}}
     if: github.event.pull_request.merged == true   
     steps:
       - name: Checkout code
@@ -27,6 +27,9 @@ jobs:
         run: |
           echo "::set-output name=versionBase::$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} **.version | grep "\-v") "
           echo "::set-output name=versionHead::$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} **.version | grep "\+v") "
+      - name: Get tags
+        id: getTags
+        run: |
           echo "::set-output name=Old::$(cut -b 2- <<< ${{steps.checkVersion.outputs.versionBase}})"
           echo "::set-output name=New::$(cut -b 2- <<< ${{steps.checkVersion.outputs.versionHead}})"
       - uses: actions/setup-python@v2
