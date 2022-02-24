@@ -51,7 +51,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
       - name: Get Version
         id: get_version
@@ -60,7 +60,7 @@ jobs:
       - name: Create Release Notes
         id : releaseNotes
         run: |
-          echo "::set-output name=ReleaseNotes::$(git log --merges master ${{needs.CheckVersion.outputs.OldVersion}} --oneline)"
+          echo "::set-output name=ReleaseNotes::$(git log --merges ${{ github.event.pull_request.base.sha }} ${{needs.CheckVersion.outputs.OldVersion}} --oneline)"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
