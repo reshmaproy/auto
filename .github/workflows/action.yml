@@ -60,7 +60,7 @@ jobs:
         id : releaseNotes
         run: |
           echo "::set-output name=ReleaseNotes::$(git log --merges ${{ github.event.pull_request.base.sha }} ${{needs.CheckVersion.outputs.OldVersion}} --oneline)"
-          echo "::set-output name=notes::$(`echo ${{steps.releaseNotes.outputs.ReleaseNotes}}; cat ReleaseNotes.txt`)"
+          echo "::set-output name=notes::$(echo ${{steps.releaseNotes.outputs.ReleaseNotes}}| cat ReleaseNotes.txt)"
           echo ${{steps.releaseNotes.outputs.notes}} > ReleaseNotes.txt
       - name: Create Draft Release
         id: create_release
