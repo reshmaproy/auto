@@ -60,8 +60,15 @@ jobs:
         id : releaseNotes
         run: |
           echo "::set-output name=ReleaseNotes::$(git log --merges ${{ github.event.pull_request.base.sha }} ${{needs.CheckVersion.outputs.OldVersion}} --oneline)"
-          echo "::set-output name=notes::$(echo ${{steps.releaseNotes.outputs.ReleaseNotes}}| cat ReleaseNotes.txt)"
-          echo ${{steps.releaseNotes.outputs.notes}} > ReleaseNotes.txt
+      - name: Append Release Notes
+        id: appendRN
+        run: |
+          RN = `echo ${{steps.releaseNotes.outputs.ReleaseNotes}}; cat ./ReleaseNotes.txt`
+          echo $RN
+          echo "$RN" > ./ReleaseNotes.txt
+          git commit -m "Added Release Notes"
+          branch = `echo ${GITHUB_REF#refs/heads/}`
+          git push origin $branch
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
