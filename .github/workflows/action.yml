@@ -40,12 +40,22 @@ jobs:
         run: |
           pip install semantic_version
           OUT=`python ./.github/workflows/version.py ${{steps.checkVersion.outputs.versionHead}} ${{steps.checkVersion.outputs.versionBase}}`
-          echo $OUT       
+          echo $OUT   
           echo "::set-output name=valid::$OUT"
+  Print:
+    runs-on: ubuntu-latest
+    needs: CheckVersion
+    steps:
+    - name: print
+      id: print
+      run: |
+        echo "valid = ${{needs.CheckVersion.outputs.ValidVersion}}"
+        echo "merge =  ${{github.event.pull_request.merged}}"
+    
   
   CreateRelease:
     runs-on: ubuntu-latest
-    needs: CheckVersion    
+    needs: CheckVersion 
     if: needs.CheckVersion.outputs.ValidVersion == 'True' && github.event.pull_request.merged == true
     steps:
       - name: Checkout code
