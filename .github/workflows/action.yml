@@ -69,7 +69,7 @@ jobs:
       - name: Create Release Notes
         id : releaseNotes
         run: |
-          echo "::set-output name=ReleaseNotes::$(git log --merges --format=%b ${{ github.event.pull_request.base.sha }} ${{needs.CheckVersion.outputs.OldVersion}})"
+          echo "::set-output name=ReleaseNotes::$(git log --format=%h:%s ${{ github.event.pull_request.base.sha }} ${{needs.CheckVersion.outputs.NewVersion}})"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
