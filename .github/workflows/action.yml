@@ -69,7 +69,8 @@ jobs:
       - name: Create Release Notes
         id : releaseNotes
         run: |
-          echo "::set-output name=ReleaseNotes::$(git log --format=%h:%s '${{needs.CheckVersion.outputs.OldVersion}}'...'${{needs.CheckVersion.outputs.NewVersion}}')"
+          git tag ${{needs.CheckVersion.outputs.NewVersion}}
+          echo "::set-output name=ReleaseNotes::$(git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}})"
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
