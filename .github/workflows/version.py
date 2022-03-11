@@ -11,6 +11,6 @@ v1 = semantic_version.Version(s1)
 v2 = semantic_version.Version(s2)
 
 valid = semantic_version.Version(s1) > semantic_version.Version(s2)
-sys.stdout.write(valid)
+sys.stdout.write(str(valid))
 sys.exit(0)
  
