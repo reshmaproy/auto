@@ -70,7 +70,7 @@ jobs:
         id : releaseNotes
         run: |
           git tag ${{needs.CheckVersion.outputs.NewVersion}}
-          git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}}
+          echo "git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}}" > CHANGELOG.txt
           echo "::set-output name=ReleaseNotes::$(git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}})"
       - name: Changelog
         uses: scottbrenner/generate-changelog-action@master
@@ -88,10 +88,7 @@ jobs:
           release_name: Release ${{steps.get_version.outputs.version}}
           draft: true
           prerelease: false
-          body: |
-            git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}}
-            echo hello
-             ${{ steps.Changelog.outputs.changelog }}
+          body_path: CHANGELOG.txt 
       - name: Create artifact files
         run: |
           mkdir info
