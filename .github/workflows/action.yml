@@ -82,7 +82,7 @@ jobs:
           release_name: Release ${{steps.get_version.outputs.version}}
           draft: true
           prerelease: false
-          body: ${{steps.releaseNotes.outputs.ReleaseNotes}}
+          body: $(git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}})
       - name: Create artifact files
         run: |
           mkdir info
