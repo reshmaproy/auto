@@ -61,7 +61,7 @@ jobs:
         id : releaseNotes
         run: |
           git tag ${{needs.CheckVersion.outputs.NewVersion}}
-          git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..${{needs.CheckVersion.outputs.NewVersion}} --no-merges > CHANGELOG.txt
+          git log --format=%h:%s ${{needs.CheckVersion.outputs.OldVersion}}..main --no-merges > CHANGELOG.txt
       - name: Create Draft Release
         id: create_release
         uses: actions/create-release@v1
